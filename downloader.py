@@ -15,11 +15,9 @@ def standardlize_filename(filename):
     return re.sub(r'[<>:"/\\|?*]', '_', filename)
 
 def generate_filename(url):
-    """Tạo tên file duy nhất từ URL bằng mã băm SHA-256."""
     parsed_url = urlparse(url)
     # Lấy đường dẫn và thay thế các ký tự không hợp lệ
     path = parsed_url.path.replace('/', '_')
-    # Thêm timestamp để tránh trùng lặp nếu cần thiết
     filename = f"{path}"
     filename_standardlized = standardlize_filename(filename)
     return filename_standardlized
