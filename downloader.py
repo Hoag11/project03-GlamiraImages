@@ -3,12 +3,16 @@ import os
 from urllib.parse import urlparse
 from config import HEADERS
 import logging
+import re
 
 # Cấu hình thư mục lưu ảnh
 folder_path = 'images'
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
+def standardlize_filename(filename):
+    """Chuẩn hóa tên file bằng cách thay thế các ký tự không hợp lệ."""
+    return re.sub(r'[<>:"/\\|?*]', '_', filename)
 
 def generate_filename(url):
     """Tạo tên file duy nhất từ URL bằng mã băm SHA-256."""
@@ -17,7 +21,8 @@ def generate_filename(url):
     path = parsed_url.path.replace('/', '_')
     # Thêm timestamp để tránh trùng lặp nếu cần thiết
     filename = f"{path}"
-    return filename
+    filename_standardlized = standardlize_filename(filename)
+    return filename_standardlized
 
 
 def download_image(image_url):
