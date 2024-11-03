@@ -20,3 +20,5 @@ pip install requests
 pip install urllib
 pip install concurrent
 pip install hashlib
+pip install fake_useragent
+```
