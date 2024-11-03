@@ -1,7 +1,7 @@
 ![image](https://github.com/user-attachments/assets/47824f75-26d1-4955-9d03-6db89aaca8cd)
  
 <h1>How to use crawler:</h1>
-1. direct to project03-GlamiraImages <br>
+1. Direct to project03-GlamiraImages <br>
 2. use this command: <br>
 <code>python main.py</code> <br>
 or: <br>
