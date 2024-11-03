@@ -1,6 +1,5 @@
 import requests
 import os
-import time
 import hashlib
 from config import HEADERS
 import logging
