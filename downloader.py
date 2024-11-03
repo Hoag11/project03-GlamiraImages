@@ -1,6 +1,6 @@
 import requests
 import os
-import hashlib
+from urllib.parse import urlparse
 from config import HEADERS
 import logging
 
@@ -10,14 +10,14 @@ if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
 
-def generate_unique_filename(url):
+def generate_filename(url):
     """Tạo tên file duy nhất từ URL bằng mã băm SHA-256."""
-    hash_object = hashlib.sha256(url.encode())
-    hex_dig = hash_object.hexdigest()
-    extension = os.path.splitext(url)[-1]  # Lấy phần mở rộng từ URL gốc (nếu có)
-    if not extension or len(extension) > 5:  # Nếu không có hoặc phần mở rộng quá dài, mặc định là .jpg
-        extension = '.jpg'
-    return f"{hex_dig}{extension}"
+    parsed_url = urlparse(url)
+    # Lấy đường dẫn và thay thế các ký tự không hợp lệ
+    path = parsed_url.path.replace('/', '_')
+    # Thêm timestamp để tránh trùng lặp nếu cần thiết
+    filename = f"{path}"
+    return filename
 
 
 def download_image(image_url):
@@ -26,8 +26,8 @@ def download_image(image_url):
         response = requests.get(image_url, headers=HEADERS, timeout=10)
         if response.status_code == 200:
             # Tạo tên file duy nhất
-            unique_name = generate_unique_filename(image_url)
-            img_name = os.path.join(folder_path, unique_name)
+            name = generate_filename(image_url)
+            img_name = os.path.join(folder_path, name)
 
             # Lưu ảnh vào file
             with open(img_name, 'wb') as f:
