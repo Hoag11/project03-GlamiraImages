@@ -24,7 +24,7 @@ def main():
         all_image_urls.extend(image_urls)
 
     # Sử dụng ThreadPoolExecutor để tải ảnh song song với số lượng worker tăng
-    max_workers = 15  # Số lượng worker có thể điều chỉnh theo tài nguyên hệ thống
+    max_workers = 60  # Số lượng worker có thể điều chỉnh theo tài nguyên hệ thống
     logging.info(f"Bắt đầu tải xuống {len(all_image_urls)} ảnh với {max_workers} worker.")
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(downloader.download_image, all_image_urls)

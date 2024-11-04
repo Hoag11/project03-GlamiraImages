@@ -6,7 +6,7 @@ import concurrent.futures
 
 def take_error_url(log_file='crawler.log'):
     """lấy danh sách các link mà không tìm được ảnh"""
-    links = []
+    links = set()
     warning_pattern = re.compile(r'WARNING.*(https?://[^\s]+)')
     try:
         with open(log_file, 'r') as f:
@@ -42,14 +42,14 @@ def take_error_image(log_file='crawler.log'):
 def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logging.info("Bắt đầu quy trình xử lý link ảnh không tìm được ảnh.")
-    max_workers = 10
+    max_workers = 20
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         failed_urls = take_error_url()
         executor.map(crawler.get_image_urls, failed_urls)
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logging.info("Bắt đầu quy trình xử lý ảnh bị lỗi.")
-    max_workers = 10
+    max_workers = 20
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         failed_images = take_error_image()
         executor.map(downloader.download_image, failed_images)
